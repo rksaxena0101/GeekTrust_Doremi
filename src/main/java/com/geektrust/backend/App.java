@@ -19,12 +19,11 @@ public class App {
         CommandInvoker commandInvoker = applicationConfig.getCommandInvoker();
         BufferedReader reader;
         try {
-            reader = new BufferedReader(new FileReader("sample_input/input2.txt"));
+            reader = new BufferedReader(new FileReader(args[0]));
             String line = reader.readLine();
             while (line != null) {
                 List<String> tokens = Arrays.asList(line.split(" "));
                 commandInvoker.executeCommand(tokens.get(0),tokens);
-                // read next line
                 line = reader.readLine();
             }
             reader.close();

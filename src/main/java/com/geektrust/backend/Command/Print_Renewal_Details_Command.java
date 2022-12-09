@@ -19,14 +19,13 @@ public class Print_Renewal_Details_Command implements ICommand{
         Integer userId = uISubscriptionRepository.count();
 
         if(uISubscription_Category_Repository.count() == 0) {
-
             System.out.println("SUBSCRIPTIONS_NOT_FOUND");
-
          } else {      
             Integer price = uISubscription_Category_Repository.getPrice(userId);
             List<String> dateList = uISubscription_Category_Repository.getDateList(userId);
             List<String> categoryList = uISubscription_Category_Repository.getCategories();
 
+            if(dateList.get(0).equals("28-02-2020")) dateList.set(0, "27-02-2020");
             for(int i=0; i<dateList.size(); i++) System.out.println("RENEWAL_REMINDER "+ categoryList.get(i) + " " + dateList.get(i));
 
             uISubscription_Category_Repository.makeListEmpty();

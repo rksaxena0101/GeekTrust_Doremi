@@ -16,7 +16,6 @@ public class Subscription_Category_Repository implements ISubscription_Category_
     private HashMap<Integer, List<String>> dateMap = new HashMap<>();
     private HashMap<String, Integer> categoryRepository = new HashMap<>();
     private ISubscriptionRepository uISubscriptionRepository;
-    private static int counter = 1;
     private List<String> categoryMap = new ArrayList<>();
     
     public Subscription_Category_Repository(ISubscriptionRepository iSubscriptionRepository) {
@@ -120,13 +119,8 @@ public class Subscription_Category_Repository implements ISubscription_Category_
 
     @Override
     public void save(String category) {
-        if(categoryRepository.containsKey(category) && categoryRepository.get(category) == uISubscriptionRepository.count()) {
-            throw new DuplicateCategoryException("ADD_SUBSCRIPTION_FAILED DUPLICATE_CATEGORY");
-        } else if(categoryRepository.containsKey(category) && categoryRepository.get(category) != uISubscriptionRepository.count()) {
-            category = category + "_" + String.valueOf(counter);
-            categoryRepository.put(category, uISubscriptionRepository.count());
-            ++counter;
-        } else {
+        if(categoryRepository.containsKey(category)) throw new DuplicateCategoryException("ADD_SUBSCRIPTION_FAILED DUPLICATE_CATEGORY");
+        else {
             categoryRepository.put(category, uISubscriptionRepository.count());
         }
     }
@@ -134,10 +128,6 @@ public class Subscription_Category_Repository implements ISubscription_Category_
     public void printCategory(String category) {
         categoryMap.add(category);
     }
-
-    // public void removeCategoryFromPringCategory() {
-    //     categoryMap.clear();
-    // }
 
     @Override
     public String findById(Integer id) {

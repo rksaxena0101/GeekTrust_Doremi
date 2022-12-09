@@ -18,16 +18,20 @@ public class Add_Subscription_Command implements ICommand{
     
     @Override
     public void execute(List<String> tokens) {
-        try {
-            String category = tokens.get(1);
-            String planType = tokens.get(2);
-            Integer userId = iSubscriptionRepository.count();
-            iSubscription_Category_Repository.save(category);
-            iSubscription_Category_Repository.printCategory(category);
-            iSubscription_Category_Repository.setSubscriptionPrice(userId, category, planType);
-            iSubscription_Category_Repository.addNoOfDaystoGivenDateAndPlanType(userId, planType);
-        } catch(DuplicateCategoryException ex) {
-            System.out.println("ADD_SUBSCRIPTION_FAILED DUPLICATE_CATEGORY");
+        if(iSubscriptionRepository.count() == 0) {
+            System.out.println("ADD_SUBSCRIPTION_FAILED INVALID_DATE");
+        } else {
+            try {
+                String category = tokens.get(1);
+                String planType = tokens.get(2);
+                Integer userId = iSubscriptionRepository.count();
+                iSubscription_Category_Repository.save(category);
+                iSubscription_Category_Repository.printCategory(category);
+                iSubscription_Category_Repository.setSubscriptionPrice(userId, category, planType);
+                iSubscription_Category_Repository.addNoOfDaystoGivenDateAndPlanType(userId, planType);
+            } catch(DuplicateCategoryException ex) {
+                System.out.println("ADD_SUBSCRIPTION_FAILED DUPLICATE_CATEGORY");
+            }
         }
     }
     

@@ -23,9 +23,8 @@ public class Start_Subscription_Command implements ICommand{
             LocalDate localDate = LocalDate.parse(date, dateTimeFormatter);
             subscriptionRepository.save(localDate);
         } catch (DateTimeParseException e) {
-            System.out.println("INVALID DATE\n"+ "ADD_SUBSCRIPTION_FAILED INVALID_DATE");
+            System.out.println("INVALID_DATE");
         }
-        //System.out.print("[Start_Subscription_Command::date]"+date);
     }
     
 }
