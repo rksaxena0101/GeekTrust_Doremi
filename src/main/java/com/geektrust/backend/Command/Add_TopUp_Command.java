@@ -29,25 +29,27 @@ public class Add_TopUp_Command implements ICommand{
                 if(uISubscription_Category_Repository.count() == 0) {
                     System.out.println("ADD_TOPUP_FAILED SUBSCRIPTION_NOT_FOUND");
                 } else if(tokens.get(1).equals("FOUR_DEVICE")) {
-                    if(map.containsKey(userId) && count == userId) {
-                        count++;
-                        int sum = 50 * Integer.parseInt(tokens.get(2));
-                        if(map.containsKey(userId)) map.put(userId, map.get(userId) + sum);
-                    }
-                    else {
-                        count = 1;
-                        try{
-                            throw new DuplicateTopUpCommandException();
-                        } catch (DuplicateTopUpCommandException e) {
-                            System.out.println("ADD_TOPUP_FAILED DUPLICATE_TOPUP");
-                        }
-                    }
+                    int sum = 50 * Integer.parseInt(tokens.get(2));
+                    checkDuplicateTopUps(userId, sum, map);
                 } else {
                     int sum = 100 * Integer.parseInt(tokens.get(2));
-                    if(map.containsKey(userId)) map.put(userId, map.get(userId) + sum);
+                    checkDuplicateTopUps(userId, sum, map);
                 }
-
                 uISubscription_Category_Repository.setPriceMap(map);
+        }
+    }
+
+    public void checkDuplicateTopUps(Integer userId, int sum, Map<Integer, Integer> map) {
+        if(map.containsKey(userId) && count == userId) {
+            count++;
+            map.put(userId, map.get(userId) + sum);
+        } else {
+            count = 1;
+            try{
+                throw new DuplicateTopUpCommandException();
+            } catch (DuplicateTopUpCommandException e) {
+                System.out.println("ADD_TOPUP_FAILED DUPLICATE_TOPUP");
             }
+        }
     }
 }
